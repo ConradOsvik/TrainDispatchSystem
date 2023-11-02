@@ -31,6 +31,10 @@ public class TrainDeparture {
     return departureTime;
   }
 
+  public LocalTime getDelayedDepartureTime() {
+    return departureTime.plusHours(delay.getHour()).plusMinutes(delay.getMinute());
+  }
+
   public String getLine() {
     return line;
   }
@@ -47,7 +51,25 @@ public class TrainDeparture {
     return track;
   }
 
+  public void setTrack(int track) {
+    this.track = track;
+  }
+
   public LocalTime getDelay() {
     return delay;
+  }
+
+  public void setDelay(String delay) {
+    this.delay = LocalTime.parse(delay, DateTimeFormatter.ofPattern("HH:mm"));
+  }
+
+  @Override
+  public String toString(){
+    return "Departure Time: " + departureTime + "\n" +
+           "Line: " + line + "\n" +
+           "Train Number: " + trainNumber + "\n" +
+           "Destination: " + destination + "\n" +
+           "Track: " + track + "\n" +
+           "Delay: " + delay;
   }
 }
