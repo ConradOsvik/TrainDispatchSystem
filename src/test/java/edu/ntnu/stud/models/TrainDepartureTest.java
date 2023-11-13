@@ -121,6 +121,13 @@ public class TrainDepartureTest {
   }
 
   @Test
+  public void setTrack_trackIs0_false(){
+    assertThrows(IllegalArgumentException.class, () -> {
+      trainDeparture.setTrack(0);
+    });
+  }
+
+  @Test
   public void setTrack_TrackIsNegative_false(){
     assertThrows(IllegalArgumentException.class, () -> {
       trainDeparture.setTrack(-2);
