@@ -1,2 +1,5 @@
-package edu.ntnu.stud.controllers;public class TrainRegisterController {
+package edu.ntnu.stud.controllers;
+
+public class TrainRegisterController {
+
 }

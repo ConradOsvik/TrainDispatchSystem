@@ -1,4 +1,4 @@
-package edu.ntnu.stud.controller;
+package edu.ntnu.stud.controllers;
 
 public class TrainDepartureController {
 
