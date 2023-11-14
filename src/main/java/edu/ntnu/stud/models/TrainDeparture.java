@@ -1,4 +1,4 @@
-package edu.ntnu.stud.model;
+package edu.ntnu.stud.models;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -242,8 +242,9 @@ public class TrainDeparture {
    * a track yet.
    *
    * @param track -1 means that the train is not assigned a track yet
+   * @throws IllegalArgumentException if the track is 0 or negative greater than -1
    */
-  public void setTrack(int track) {
+  public void setTrack(int track) throws IllegalArgumentException {
     if (track == 0) {
       throw new IllegalArgumentException("Track cannot be 0");
     }
@@ -266,6 +267,7 @@ public class TrainDeparture {
    * Delay is a string of the format HH:mm.
    *
    * @param delay delay of the train
+   * @throws IllegalArgumentException if the delay is negative or more than 23:59
    */
   public void setDelay(String delay) throws IllegalArgumentException {
     if (LocalTime.parse(delay, DateTimeFormatter.ofPattern("HH:mm"))
