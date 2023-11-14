@@ -1,7 +1,6 @@
 package edu.ntnu.stud.models;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -10,7 +9,7 @@ import java.time.format.DateTimeParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TrainDepartureTest {
+public class TestTrainDeparture {
 
   TrainDeparture trainDeparture;
 
@@ -31,58 +30,42 @@ public class TrainDepartureTest {
 
   @Test
   public void constructor_departureTimeIs2401_false() {
-    assertThrows(DateTimeParseException.class, () -> {
-      new TrainDeparture("24:01", "F1", 100, "Oslo", 1, "00:10");
-    });
+    assertThrows(DateTimeParseException.class, () -> new TrainDeparture("24:01", "F1", 100, "Oslo", 1, "00:10"));
   }
 
   @Test
   public void constructor_departureTimeIsNegative_false() {
-    assertThrows(DateTimeParseException.class, () -> {
-      new TrainDeparture("-12:00", "F1", 100, "Oslo", 1, "00:10");
-    });
+    assertThrows(DateTimeParseException.class, () -> new TrainDeparture("-12:00", "F1", 100, "Oslo", 1, "00:10"));
   }
 
   @Test
   public void constructor_lineIsBlank_false() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      new TrainDeparture("12:00", "", 100, "Oslo", 1, "00:10");
-    });
+    assertThrows(IllegalArgumentException.class, () -> new TrainDeparture("12:00", "", 100, "Oslo", 1, "00:10"));
   }
 
   @Test
   public void constructor_trainNumberIsNegative_false() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      new TrainDeparture("12:00", "F1", -1, "Oslo", 1, "00:10");
-    });
+    assertThrows(IllegalArgumentException.class, () -> new TrainDeparture("12:00", "F1", -1, "Oslo", 1, "00:10"));
   }
 
   @Test
   public void constructor_destinationIsBlank_false() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      new TrainDeparture("12:00", "F1", 100, "", 1, "00:10");
-    });
+    assertThrows(IllegalArgumentException.class, () -> new TrainDeparture("12:00", "F1", 100, "", 1, "00:10"));
   }
 
   @Test
   public void constructor_trackIsNegative2_false() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      new TrainDeparture("12:00", "F1", 100, "Oslo", -2, "00:10");
-    });
+    assertThrows(IllegalArgumentException.class, () -> new TrainDeparture("12:00", "F1", 100, "Oslo", -2, "00:10"));
   }
 
   @Test
   public void constructor_delayIs2401_false() {
-    assertThrows(DateTimeParseException.class, () -> {
-      new TrainDeparture("12:00", "F1", 100, "Oslo", 1, "24:01");
-    });
+    assertThrows(DateTimeParseException.class, () -> new TrainDeparture("12:00", "F1", 100, "Oslo", 1, "24:01"));
   }
 
   @Test
   public void constructor_delayIsNegative_false() {
-    assertThrows(DateTimeParseException.class, () -> {
-      new TrainDeparture("12:00", "F1", 100, "Oslo", 1, "-00:10");
-    });
+    assertThrows(DateTimeParseException.class, () -> new TrainDeparture("12:00", "F1", 100, "Oslo", 1, "-00:10"));
   }
 
   @Test
@@ -123,16 +106,12 @@ public class TrainDepartureTest {
 
   @Test
   public void setTrack_trackIs0_false() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      trainDeparture.setTrack(0);
-    });
+    assertThrows(IllegalArgumentException.class, () -> trainDeparture.setTrack(0));
   }
 
   @Test
   public void setTrack_TrackIsNegative_false() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      trainDeparture.setTrack(-2);
-    });
+    assertThrows(IllegalArgumentException.class, () -> trainDeparture.setTrack(-2));
   }
 
   @Test
@@ -148,16 +127,12 @@ public class TrainDepartureTest {
 
   @Test
   public void setDelay_delayIsValid_false() {
-    assertThrows(DateTimeParseException.class, () -> {
-      trainDeparture.setDelay("24:01");
-    });
+    assertThrows(DateTimeParseException.class, () -> trainDeparture.setDelay("24:01"));
   }
 
   @Test
   public void setDelay_delayIsNegative_false() {
-    assertThrows(DateTimeParseException.class, () -> {
-      trainDeparture.setDelay("-00:10");
-    });
+    assertThrows(DateTimeParseException.class, () -> trainDeparture.setDelay("-00:10"));
   }
 
   @Test

@@ -2,7 +2,7 @@ package edu.ntnu.stud.models;
 
 import org.junit.jupiter.api.BeforeEach;
 
-public class TrainRegisterTest {
+public class TestTrainRegister {
   TrainRegister trainRegister;
 
   @BeforeEach
