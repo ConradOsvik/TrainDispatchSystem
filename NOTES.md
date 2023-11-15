@@ -1,0 +1,1 @@
+https://medium.com/@stefanovskyi/unit-test-naming-conventions-dd9208eadbea

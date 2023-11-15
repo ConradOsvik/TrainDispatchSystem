@@ -9,6 +9,10 @@ import java.time.format.DateTimeParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test class for the TrainDeparture entity class.
+ * The class methods follows the methodName_stateUnderTest_expectedBehavior naming convention.
+ */
 public class TestTrainDeparture {
 
   TrainDeparture trainDeparture;
