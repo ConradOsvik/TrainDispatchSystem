@@ -1,4 +1,4 @@
-package edu.ntnu.stud.utils;
+package edu.ntnu.stud.input;
 
 import java.util.Scanner;
 
