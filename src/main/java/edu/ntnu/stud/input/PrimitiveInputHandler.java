@@ -2,7 +2,6 @@ package edu.ntnu.stud.input;
 
 import edu.ntnu.stud.exceptions.InvalidFormatException;
 import java.util.Scanner;
-import java.util.concurrent.Callable;
 
 public class PrimitiveInputHandler {
 
@@ -24,7 +23,7 @@ public class PrimitiveInputHandler {
     return execute(() -> Double.parseDouble(scanner.nextLine()));
   }
 
-  private <T> T execute(Callable<T> callable) throws InvalidFormatException {
+  private <T> T execute(PrimitiveInputCallable<T> callable) throws InvalidFormatException {
     try {
       return callable.call();
     } catch (Exception e) {
