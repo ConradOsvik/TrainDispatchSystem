@@ -4,8 +4,8 @@ import edu.ntnu.stud.commands.AddTestDataCommand;
 import edu.ntnu.stud.commands.AddTrainCommand;
 import edu.ntnu.stud.commands.Command;
 import edu.ntnu.stud.commands.ExitCommand;
-import edu.ntnu.stud.commands.SearchTrainsByDestinationCommand;
 import edu.ntnu.stud.commands.SearchTrainByTrainNumberCommand;
+import edu.ntnu.stud.commands.SearchTrainsByDestinationCommand;
 import edu.ntnu.stud.commands.SetTrainDelayCommand;
 import edu.ntnu.stud.commands.SetTrainTrackCommand;
 import edu.ntnu.stud.commands.ShowTrainTableCommand;
@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * A class representing the controller of the application.
+ */
 public class TrainController {
 
   private final TrainRegister trainRegister;
@@ -27,6 +30,12 @@ public class TrainController {
   private final List<Command> commands;
   private LocalTime time;
 
+  /**
+   * Initializes the TrainController.
+   *
+   * @param trainRegister The TrainRegister to use.
+   * @param consoleView   The ConsoleView to use.
+   */
   public TrainController(TrainRegister trainRegister, ConsoleView consoleView) {
     this.trainRegister = trainRegister;
     this.consoleView = consoleView;
@@ -44,10 +53,31 @@ public class TrainController {
     commands.add(new ExitCommand(this));
   }
 
+  /**
+   * Truncates a string to a maximum length of 20 characters.
+   *
+   * @param text the text to be truncated.
+   */
+  private static String truncate(String text) {
+    if (text.length() > 20) {
+      return text.substring(0, 17) + "...";
+    } else {
+      return text;
+    }
+  }
+
+  /**
+   * Returns the ConsoleView.
+   *
+   * @return The ConsoleView.
+   */
   public ConsoleView getConsoleView() {
     return this.consoleView;
   }
 
+  /**
+   * Handles the incoming requests from the application.
+   */
   public void handleRequest() {
     consoleView.displayMenu(commands);
     int choice = consoleView.getUserInput(commands.size());
@@ -56,6 +86,11 @@ public class TrainController {
     command.execute();
   }
 
+  /**
+   * Adds a train to the register and prints the result to the user.
+   *
+   * @param trainDeparture the train departure to be added.
+   */
   public void addTrainToRegisterAndPrintMessage(TrainDeparture trainDeparture) {
     try {
       if (trainDeparture.getDelayedDepartureTime().isBefore(this.time)) {
@@ -73,6 +108,12 @@ public class TrainController {
     }
   }
 
+  /**
+   * Sets the train track of a train and prints the result to the user.
+   *
+   * @param trainNumber the train number.
+   * @param track       the track of the train.
+   */
   public void setTrainTrackAndPrintMessage(int trainNumber, int track) {
     try {
       TrainDeparture trainDeparture = this.trainRegister.getTrain(trainNumber);
@@ -90,6 +131,12 @@ public class TrainController {
     }
   }
 
+  /**
+   * Sets the train delay of a train and prints the result to the user.
+   *
+   * @param trainNumber the train number.
+   * @param delay       the delay of the train.
+   */
   public void setTrainDelayAndPrintMessage(int trainNumber, String delay) {
     try {
       TrainDeparture trainDeparture = this.trainRegister.getTrain(trainNumber);
@@ -107,6 +154,11 @@ public class TrainController {
     }
   }
 
+  /**
+   * Searches for a train by train number and prints the result to the user.
+   *
+   * @param trainNumber the train number.
+   */
   public void searchTrainByTrainNumberAndPrintMessage(int trainNumber) {
     try {
       TrainDeparture trainDeparture = this.trainRegister.getTrain(trainNumber);
@@ -121,6 +173,11 @@ public class TrainController {
     }
   }
 
+  /**
+   * Searches for trains by destination and prints the result to the user.
+   *
+   * @param destination the destination of the train.
+   */
   public void searchTrainsByDestinationAndPrintMessage(String destination) {
     try {
       List<TrainDeparture> trainDepartures = this.trainRegister.getTrainsByDestination(destination);
@@ -135,6 +192,11 @@ public class TrainController {
     }
   }
 
+  /**
+   * Updates the time and prints the result to the user.
+   *
+   * @param time the time to be set.
+   */
   public void updateTimeAndPrintMessage(String time) {
     try {
       this.time = LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
@@ -147,11 +209,17 @@ public class TrainController {
     }
   }
 
+  /**
+   * Shows the table of trains.
+   */
   public void showTableOfTrains() {
     List<TrainDeparture> trainDepartures = this.trainRegister.getTrainsSortedByDepartureTime();
     printTableOfTrains(trainDepartures);
   }
 
+  /**
+   * Creates a table header.
+   */
   private String header() {
     return Color.colorString(String.format("%-20s | %-20s | %-20s | %-20s | %-20s",
         truncate("Departure time"),
@@ -161,39 +229,56 @@ public class TrainController {
         truncate("Track")), Color.YELLOW);
   }
 
+  /**
+   * Creates a table separator.
+   */
   private String separator() {
     return Color.colorString(String.join("", Collections.nCopies(header().length(), "-")),
         Color.YELLOW);
   }
 
+  /**
+   * Creates a table row using a train departure.
+   *
+   * @param trainDeparture the train departure.
+   */
   private String row(TrainDeparture trainDeparture) {
     return Color.colorString(String.format("%-20s | %-20s | %-20s | %-20s | %-20s",
-        truncate(trainDeparture.getDelayedDepartureTime().toString()),
-        truncate(trainDeparture.getLine()),
-        truncate(Integer.toString(trainDeparture.getTrainNumber())),
-        truncate(trainDeparture.getDestination()),
-        truncate(trainDeparture.getTrack() > 0 ? Integer.toString(trainDeparture.getTrack()) : "Unset")), Color.YELLOW);
+            truncate(trainDeparture.getDelayedDepartureTime().toString()),
+            truncate(trainDeparture.getLine()),
+            truncate(Integer.toString(trainDeparture.getTrainNumber())),
+            truncate(trainDeparture.getDestination()),
+            truncate(
+                trainDeparture.getTrack() > 0
+                    ? Integer.toString(trainDeparture.getTrack())
+                    : "Unset"
+            )
+        ),
+        Color.YELLOW
+    );
   }
 
+  /**
+   * Prints a table of trains using a train departure.
+   *
+   * @param trainDeparture the train departure.
+   */
   private void printTableOfTrains(TrainDeparture trainDeparture) {
     consoleView.displayMessage(header());
     consoleView.displayMessage(separator());
     consoleView.displayMessage(row(trainDeparture));
   }
 
+  /**
+   * Prints a table of trains using a list of train departures.
+   *
+   * @param trainDepartures the list of train departures.
+   */
   private void printTableOfTrains(List<TrainDeparture> trainDepartures) {
     consoleView.displayMessage(header());
     trainDepartures.forEach(trainDeparture -> {
       consoleView.displayMessage(separator());
       consoleView.displayMessage(row(trainDeparture));
     });
-  }
-
-  private static String truncate(String text) {
-    if (text.length() > 17) {
-      return text.substring(0, 17) + "...";
-    } else {
-      return text;
-    }
   }
 }
