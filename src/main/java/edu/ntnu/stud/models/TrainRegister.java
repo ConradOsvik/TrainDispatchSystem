@@ -1,7 +1,6 @@
 package edu.ntnu.stud.models;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -68,8 +67,7 @@ public class TrainRegister {
    * Gets a train departure from the register by its train number.
    *
    * @param trainNumber the train number of the train departure to get
-   * @return the train departure with the given train number, or null if no such train departure
-   * exists
+   * @return the train departure for a given train number, or null if no such train departure exists
    */
   public TrainDeparture getTrain(int trainNumber) {
     return register.get(trainNumber);
