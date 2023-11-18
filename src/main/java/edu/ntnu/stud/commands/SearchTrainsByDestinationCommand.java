@@ -1,16 +1,19 @@
 package edu.ntnu.stud.commands;
 
 import edu.ntnu.stud.controllers.TrainController;
+import edu.ntnu.stud.input.ValidatedInput;
 import edu.ntnu.stud.views.ConsoleView;
 
-public class SearchTrainByDestinationCommand implements Command {
+public class SearchTrainsByDestinationCommand implements Command {
 
   private final TrainController trainController;
   private final ConsoleView consoleView;
+  private final ValidatedInput validatedInput;
 
-  public SearchTrainByDestinationCommand(TrainController trainController) {
+  public SearchTrainsByDestinationCommand(TrainController trainController) {
     this.trainController = trainController;
     this.consoleView = trainController.getConsoleView();
+    this.validatedInput = new ValidatedInput();
   }
 
   @Override
@@ -25,6 +28,9 @@ public class SearchTrainByDestinationCommand implements Command {
 
   @Override
   public void execute() {
-    System.out.println("SearchTrainByDestinationCommand executed");
+    consoleView.displayMessage("Please enter the destination you want to look up:");
+    String destination = validatedInput.getString();
+
+    trainController.searchTrainsByDestinationAndPrintMessage(destination);
   }
 }
