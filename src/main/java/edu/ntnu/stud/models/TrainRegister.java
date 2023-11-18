@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A register storing train departures in a hashmap.
@@ -18,6 +19,15 @@ public class TrainRegister {
    */
   public TrainRegister() {
     this.register = new HashMap<>();
+  }
+
+  /**
+   * Gets the register itself (the hashmap).
+   *
+   * @return the register
+   */
+  public HashMap<Integer, TrainDeparture> getRegister() {
+    return register;
   }
 
   /**
@@ -50,11 +60,8 @@ public class TrainRegister {
    * @param time the time to remove train departures before
    */
   public void removeTrainsAfterTime(LocalTime time) {
-    for (TrainDeparture trainDeparture : register.values()) {
-      if (trainDeparture.getDelayedDepartureTime().isBefore(time)) {
-        this.removeTrain(trainDeparture.getTrainNumber());
-      }
-    }
+    this.register.entrySet()
+        .removeIf(entry -> entry.getValue().getDelayedDepartureTime().isBefore(time));
   }
 
   /**
@@ -62,7 +69,7 @@ public class TrainRegister {
    *
    * @param trainNumber the train number of the train departure to get
    * @return the train departure with the given train number, or null if no such train departure
-   *     exists
+   * exists
    */
   public TrainDeparture getTrain(int trainNumber) {
     return register.get(trainNumber);
@@ -75,15 +82,9 @@ public class TrainRegister {
    * @return a list of train departures with the given destination
    */
   public List<TrainDeparture> getTrainsByDestination(String destination) {
-    List<TrainDeparture> trainDepartures = new ArrayList<>();
-
-    for (TrainDeparture trainDeparture : register.values()) {
-      if (trainDeparture.getDestination().equals(destination)) {
-        trainDepartures.add(trainDeparture);
-      }
-    }
-
-    return trainDepartures;
+    return this.register.values().stream()
+        .filter(trainDeparture -> trainDeparture.getDestination().equals(destination))
+        .collect(Collectors.toList());
   }
 
   /**
@@ -94,15 +95,6 @@ public class TrainRegister {
   public List<TrainDeparture> getTrainsSortedByDepartureTime() {
     return register.values().stream()
         .sorted(Comparator.comparing(TrainDeparture::getDepartureTime)).toList();
-  }
-
-  /**
-   * Gets the register itself (the hashmap).
-   *
-   * @return the register
-   */
-  public HashMap<Integer, TrainDeparture> getRegister() {
-    return register;
   }
 
   /**
