@@ -283,6 +283,22 @@ public class TrainDeparture {
   }
 
   /**
+   * delay is a LocalTime object.
+   *
+   * @param delay delay of the train
+   */
+  public void setDelay(LocalTime delay) {
+    if (delay.isBefore(LocalTime.parse("00:00"))) {
+      throw new IllegalArgumentException("Delay cannot be negative");
+    }
+    if (delay.isAfter(LocalTime.parse("23:59"))) {
+      throw new IllegalArgumentException("Delay cannot be more than 23:59");
+    }
+
+    this.delay = delay;
+  }
+
+  /**
    * delayHours is an int between 0 and 23, delayMinutes is an int between 0 and 59.
    *
    * @param delayHours   amount of delay hours of the train
@@ -297,22 +313,6 @@ public class TrainDeparture {
     }
 
     this.delay = LocalTime.of(delayHours, delayMinutes);
-  }
-
-  /**
-   * delay is a LocalTime object.
-   *
-   * @param delay delay of the train
-   */
-  public void setDelay(LocalTime delay) {
-    if (delay.isBefore(LocalTime.parse("00:00"))) {
-      throw new IllegalArgumentException("Delay cannot be negative");
-    }
-    if (delay.isAfter(LocalTime.parse("23:59"))) {
-      throw new IllegalArgumentException("Delay cannot be more than 23:59");
-    }
-
-    this.delay = delay;
   }
 
   /**
