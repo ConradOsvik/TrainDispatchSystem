@@ -5,14 +5,25 @@ import edu.ntnu.stud.input.ValidatedInput;
 import edu.ntnu.stud.utils.Color;
 import java.util.List;
 
+/**
+ * A class representing the console view of the application.
+ */
 public class ConsoleView {
 
   private final ValidatedInput inputValidator;
 
+  /**
+   * The constructor of the class, initializing a validated input.
+   */
   public ConsoleView() {
     this.inputValidator = new ValidatedInput();
   }
 
+  /**
+   * A method for displaying the menu of the application.
+   *
+   * @param commands the list of commands to be displayed
+   */
   public void displayMenu(List<Command> commands) {
     System.out.println("Please choose a command:");
     for (int i = 0; i < commands.size(); i++) {
@@ -22,10 +33,21 @@ public class ConsoleView {
     }
   }
 
+  /**
+   * A method for displaying a message to the user.
+   *
+   * @param message the message to be displayed
+   */
   public void displayMessage(String message) {
     System.out.println(message);
   }
 
+  /**
+   * A method for getting the user input.
+   *
+   * @param commandsSize the number of commands to choose from
+   * @return the user input (choice)
+   */
   public int getUserInput(int commandsSize) {
     try {
       int choice = inputValidator.getInt();
