@@ -3,24 +3,45 @@ package edu.ntnu.stud.commands;
 import edu.ntnu.stud.controllers.TrainController;
 import edu.ntnu.stud.models.TrainDeparture;
 
+/**
+ * A Command class adding test data when run.
+ */
 public class AddTestDataCommand implements Command {
 
   private final TrainController trainController;
 
+  /**
+   * Initializes the AddTestDataCommand.
+   *
+   * @param trainController The TrainController to use.
+   */
   public AddTestDataCommand(TrainController trainController) {
     this.trainController = trainController;
   }
 
+  /**
+   * Returns the name of the command.
+   *
+   * @return The name of the command.
+   */
   @Override
   public String getName() {
     return "Add test data";
   }
 
+  /**
+   * Returns the description of the command.
+   *
+   * @return The description of the command.
+   */
   @Override
   public String getDescription() {
     return "adds test data to the application for testing";
   }
 
+  /**
+   * Executes the command.
+   */
   @Override
   public void execute() {
     TrainDeparture trainDeparture1 = new TrainDeparture(
