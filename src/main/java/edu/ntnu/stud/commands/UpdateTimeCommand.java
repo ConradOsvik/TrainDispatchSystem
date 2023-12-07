@@ -21,7 +21,7 @@ public class UpdateTimeCommand implements Command {
   public UpdateTimeCommand(TrainController trainController) {
     this.trainController = trainController;
     this.consoleView = trainController.getConsoleView();
-    this.validatedInput = new ValidatedInput();
+    this.validatedInput = new ValidatedInput(this.consoleView);
   }
 
   /**

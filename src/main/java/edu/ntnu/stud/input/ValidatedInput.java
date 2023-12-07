@@ -3,18 +3,21 @@ package edu.ntnu.stud.input;
 import edu.ntnu.stud.exceptions.InvalidFormatException;
 import edu.ntnu.stud.exceptions.InvalidInputException;
 import edu.ntnu.stud.utils.Color;
+import edu.ntnu.stud.views.ConsoleView;
 
 /**
  * This class represents a validator for user input.
  */
 public class ValidatedInput {
 
+  private final ConsoleView consoleView;
   private final InputHandler inputHandler;
 
   /**
    * Initializes the ValidatedInput.
    */
-  public ValidatedInput() {
+  public ValidatedInput(ConsoleView consoleView) {
+    this.consoleView = consoleView;
     this.inputHandler = new InputHandler();
   }
 
@@ -93,7 +96,7 @@ public class ValidatedInput {
       try {
         return callable.call();
       } catch (InvalidFormatException | InvalidInputException e) {
-        System.out.println(Color.colorString(e.getMessage(), Color.RED));
+        consoleView.displayMessage(Color.colorString(e.getMessage(), Color.RED));
       }
     }
   }

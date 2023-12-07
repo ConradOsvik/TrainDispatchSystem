@@ -21,7 +21,7 @@ public class SearchTrainsByDestinationCommand implements Command {
   public SearchTrainsByDestinationCommand(TrainController trainController) {
     this.trainController = trainController;
     this.consoleView = trainController.getConsoleView();
-    this.validatedInput = new ValidatedInput();
+    this.validatedInput = new ValidatedInput(this.consoleView);
   }
 
   /**
