@@ -6,14 +6,14 @@ import java.util.Scanner;
 /**
  * This class represents a handler for low level primitive input.
  */
-public class PrimitiveInputHandler {
+class PrimitiveInputHandler {
 
   private final Scanner scanner;
 
   /**
    * Initializes the PrimitiveInputHandler using system.in for input.
    */
-  public PrimitiveInputHandler() {
+  PrimitiveInputHandler() {
     this.scanner = new Scanner(System.in);
   }
 
@@ -23,7 +23,7 @@ public class PrimitiveInputHandler {
    * @return the string a user inputted
    * @throws InvalidFormatException if the input has invalid format
    */
-  public String getString() throws InvalidFormatException {
+  String getString() throws InvalidFormatException {
     return execute(scanner::nextLine);
   }
 
@@ -33,7 +33,7 @@ public class PrimitiveInputHandler {
    * @return the int a user inputted
    * @throws InvalidFormatException if the input has invalid format
    */
-  public int getInt() throws InvalidFormatException {
+  int getInt() throws InvalidFormatException {
     return execute(() -> Integer.parseInt(scanner.nextLine()));
   }
 
@@ -43,7 +43,7 @@ public class PrimitiveInputHandler {
    * @return the double a user inputted
    * @throws InvalidFormatException if the input has invalid format
    */
-  public double getDouble() throws InvalidFormatException {
+  double getDouble() throws InvalidFormatException {
     return execute(() -> Double.parseDouble(scanner.nextLine()));
   }
 
@@ -58,7 +58,7 @@ public class PrimitiveInputHandler {
   private <T> T execute(PrimitiveInputCallable<T> callable) throws InvalidFormatException {
     try {
       return callable.call();
-    } catch (Exception e) {
+    } catch (InvalidFormatException e) {
       throw new InvalidFormatException();
     }
   }

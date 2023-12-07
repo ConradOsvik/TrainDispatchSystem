@@ -7,14 +7,14 @@ import edu.ntnu.stud.utils.RegexValidator;
 /**
  * This class represents a handler for high level input.
  */
-public class InputHandler {
+class InputHandler {
 
   private final PrimitiveInputHandler primitiveInputHandler;
 
   /**
    * Initializes the InputHandler.
    */
-  public InputHandler() {
+  InputHandler() {
     this.primitiveInputHandler = new PrimitiveInputHandler();
   }
 
@@ -24,7 +24,7 @@ public class InputHandler {
    * @return the string a user inputted
    * @throws InvalidFormatException if the input has invalid format
    */
-  public String getString() throws InvalidFormatException {
+  String getString() throws InvalidFormatException {
     return primitiveInputHandler.getString();
   }
 
@@ -34,7 +34,7 @@ public class InputHandler {
    * @return the int a user inputted
    * @throws InvalidFormatException if the input has invalid format
    */
-  public int getInt() throws InvalidFormatException {
+  int getInt() throws InvalidFormatException {
     return primitiveInputHandler.getInt();
   }
 
@@ -44,7 +44,7 @@ public class InputHandler {
    * @return the double a user inputted
    * @throws InvalidFormatException if the input has invalid format
    */
-  public double getDouble() throws InvalidFormatException {
+  double getDouble() throws InvalidFormatException {
     return primitiveInputHandler.getDouble();
   }
 
@@ -53,9 +53,8 @@ public class InputHandler {
    *
    * @return the time a user inputted
    * @throws InvalidFormatException if the input has invalid format
-   * @throws InvalidInputException  if the input is invalid
    */
-  public String getTime() throws InvalidFormatException, InvalidInputException {
+  String getTime() throws InvalidFormatException {
     String input = primitiveInputHandler.getString();
     boolean validPattern = RegexValidator.isTime(input);
 
@@ -73,7 +72,7 @@ public class InputHandler {
    * @return the line a user inputted
    * @throws InvalidFormatException if the input has invalid format
    */
-  public String getLine() throws InvalidFormatException {
+  String getLine() throws InvalidFormatException {
     String input = primitiveInputHandler.getString();
     boolean validPattern = RegexValidator.isLine(input);
 
@@ -93,7 +92,7 @@ public class InputHandler {
    * @throws InvalidFormatException if the input has invalid format
    * @throws InvalidInputException  if the input is invalid (0 or less)
    */
-  public int getTrainNumber() throws InvalidFormatException, InvalidInputException {
+  int getTrainNumber() throws InvalidFormatException, InvalidInputException {
     int input = primitiveInputHandler.getInt();
 
     if (input < 1) {
@@ -110,7 +109,7 @@ public class InputHandler {
    * @throws InvalidFormatException if the input has invalid format
    * @throws InvalidInputException  if the input is invalid (equal 0 or less than -1)
    */
-  public int getTrack() throws InvalidFormatException, InvalidInputException {
+  int getTrack() throws InvalidFormatException, InvalidInputException {
     int input = primitiveInputHandler.getInt();
 
     if (input < -1 || input == 0) {

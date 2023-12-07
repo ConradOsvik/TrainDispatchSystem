@@ -9,7 +9,7 @@ import edu.ntnu.stud.exceptions.InvalidInputException;
  * @param <T> The type of the method.
  */
 @FunctionalInterface
-public interface InputCallable<T> {
+interface InputCallable<T> {
 
   /**
    * Calls the method.

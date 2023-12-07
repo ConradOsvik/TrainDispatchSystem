@@ -8,7 +8,7 @@ import edu.ntnu.stud.exceptions.InvalidFormatException;
  * @param <T> The type of the method.
  */
 @FunctionalInterface
-public interface PrimitiveInputCallable<T> {
+interface PrimitiveInputCallable<T> {
 
   /**
    * Calls the method.
