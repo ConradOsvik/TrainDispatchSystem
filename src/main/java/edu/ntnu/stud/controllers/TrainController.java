@@ -50,11 +50,13 @@ public class TrainController {
     commands.add(new ExitCommand(this));
   }
 
-  private void execute(TrainControllerCallable callable) {
+  private boolean execute(TrainControllerCallable callable) {
     try {
       callable.call();
+      return true;
     } catch (Exception e) {
       consoleView.displayErrorMessage(e.getMessage());
+      return false;
     }
   }
 
@@ -83,8 +85,8 @@ public class TrainController {
    *
    * @param trainDeparture the train departure to be added.
    */
-  public void addTrainToRegister(TrainDeparture trainDeparture) {
-    execute(() -> {
+  public boolean addTrainToRegister(TrainDeparture trainDeparture) {
+    return execute(() -> {
       this.trainRegister.addTrain(trainDeparture);
       consoleView.displayMessage(Color.colorString(
               String.format("Train with number %d successfully added to the register",
@@ -100,8 +102,8 @@ public class TrainController {
    * @param trainNumber the train number.
    * @param track       the track of the train.
    */
-  public void setTrainTrack(int trainNumber, int track) {
-    execute(() -> {
+  public boolean setTrainTrack(int trainNumber, int track) {
+    return execute(() -> {
       TrainDeparture trainDeparture = this.trainRegister.getTrain(trainNumber);
       if (trainDeparture == null) {
         throw new IllegalArgumentException(
@@ -124,8 +126,8 @@ public class TrainController {
    * @param trainNumber the train number.
    * @param delay       the delay of the train.
    */
-  public void setTrainDelay(int trainNumber, String delay) {
-    execute(() -> {
+  public boolean setTrainDelay(int trainNumber, String delay) {
+    return execute(() -> {
       TrainDeparture trainDeparture = this.trainRegister.getTrain(trainNumber);
       if (trainDeparture == null) {
         throw new IllegalArgumentException(
@@ -147,8 +149,8 @@ public class TrainController {
    *
    * @param trainNumber the train number.
    */
-  public void searchTrainByTrainNumber(int trainNumber) {
-    execute(() -> {
+  public boolean searchTrainByTrainNumber(int trainNumber) {
+    return execute(() -> {
       TrainDeparture trainDeparture = this.trainRegister.getTrain(trainNumber);
       if (trainDeparture == null) {
         throw new IllegalArgumentException(
@@ -164,8 +166,8 @@ public class TrainController {
    *
    * @param destination the destination of the train.
    */
-  public void searchTrainsByDestination(String destination) {
-    execute(() -> {
+  public boolean searchTrainsByDestination(String destination) {
+    return execute(() -> {
       List<TrainDeparture> trainDepartures = this.trainRegister.getTrainsByDestination(destination);
       if (trainDepartures.isEmpty()) {
         throw new IllegalArgumentException(
@@ -181,8 +183,8 @@ public class TrainController {
    *
    * @param time the time to be set.
    */
-  public void updateTime(String time) {
-    execute(() -> {
+  public boolean updateTime(String time) {
+    return execute(() -> {
       trainRegister.setTime(LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm")));
 
       consoleView.displayMessage(
@@ -194,8 +196,8 @@ public class TrainController {
   /**
    * Shows the table of trains.
    */
-  public void showTableOfTrains() {
-    execute(() -> {
+  public boolean showTableOfTrains() {
+    return execute(() -> {
       List<TrainDeparture> trainDepartures = this.trainRegister.getTrainsSortedByDepartureTime();
       consoleView.printTableOfTrains(trainDepartures);
     });
