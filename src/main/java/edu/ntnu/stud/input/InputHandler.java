@@ -56,11 +56,17 @@ class InputHandler {
    */
   String getTime() throws InvalidFormatException {
     String input = primitiveInputHandler.getString();
+
+    if (input.isBlank()) {
+      // If the input is blank, set it to 00:00
+      input = "00:00";
+    }
+
     boolean validPattern = RegexValidator.isTime(input);
 
     if (!validPattern) {
       throw new InvalidFormatException(
-          "The time must be in the format of HH:mm, please try again:");
+          "The time must be in the format HH:mm, please try again:");
     }
 
     return input;
@@ -74,6 +80,7 @@ class InputHandler {
    */
   String getLine() throws InvalidFormatException {
     String input = primitiveInputHandler.getString();
+
     boolean validPattern = RegexValidator.isLine(input);
 
     if (!validPattern) {
