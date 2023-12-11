@@ -1,5 +1,6 @@
 package edu.ntnu.stud.models;
 
+import edu.ntnu.stud.utils.RegexValidator;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -35,14 +36,12 @@ public class TrainDeparture {
       String delay
   ) {
     validateParams(
-        LocalTime.parse(departureTime, DateTimeFormatter.ofPattern("HH:mm")).getHour(),
-        LocalTime.parse(departureTime, DateTimeFormatter.ofPattern("HH:mm")).getMinute(),
+        departureTime,
         line,
         trainNumber,
         destination,
         track,
-        LocalTime.parse(delay, DateTimeFormatter.ofPattern("HH:mm")).getHour(),
-        LocalTime.parse(delay, DateTimeFormatter.ofPattern("HH:mm")).getMinute()
+        delay
     );
 
     this.departureTime = LocalTime.parse(departureTime, DateTimeFormatter.ofPattern("HH:mm"));
@@ -54,49 +53,7 @@ public class TrainDeparture {
   }
 
   /**
-   * Constructs a new TrainDeparture object with the given parameters.
-   *
-   * @param departureHours   the departure hours of the train
-   * @param departureMinutes the departure minutes of the train
-   * @param line             the train line
-   * @param trainNumber      the train number (unique)
-   * @param destination      the destination of the train
-   * @param track            the track of the train, -1 means that the train is not assigned a track
-   *                         yet
-   * @param delayHours       the delay hours of the train
-   * @param delayMinutes     the delay minutes of the train
-   */
-  public TrainDeparture(
-      int departureHours,
-      int departureMinutes,
-      String line,
-      int trainNumber,
-      String destination,
-      int track,
-      int delayHours,
-      int delayMinutes
-  ) {
-    validateParams(
-        departureHours,
-        departureMinutes,
-        line,
-        trainNumber,
-        destination,
-        track,
-        delayHours,
-        delayMinutes
-    );
-
-    this.departureTime = LocalTime.of(departureHours, departureMinutes);
-    this.line = line;
-    this.trainNumber = trainNumber;
-    this.destination = destination;
-    this.track = track;
-    this.delay = LocalTime.of(delayHours, delayMinutes);
-  }
-
-  /**
-   * Constructs a new TrainDeparture object with the given parameters.
+   * Validates the given parameters of the constructor.
    *
    * @param departureTime the departure time of the train
    * @param line          the train line
@@ -106,79 +63,51 @@ public class TrainDeparture {
    *                      yet
    * @param delay         the delay of the train
    */
-  public TrainDeparture(
-      LocalTime departureTime,
-      String line,
-      int trainNumber,
-      String destination,
-      int track,
-      LocalTime delay
-  ) {
-    validateParams(
-        departureTime.getHour(),
-        departureTime.getMinute(),
-        line,
-        trainNumber,
-        destination,
-        track,
-        delay.getHour(),
-        delay.getMinute()
-    );
-
-    this.departureTime = departureTime;
-    this.line = line;
-    this.trainNumber = trainNumber;
-    this.destination = destination;
-    this.track = track;
-    this.delay = delay;
-  }
-
-  /**
-   * Validates the given parameters of the constructor.
-   *
-   * @param departureHours   the departure hours of the train
-   * @param departureMinutes the departure minutes of the train
-   * @param line             the train line
-   * @param trainNumber      the train number (unique)
-   * @param destination      the destination of the train
-   * @param track            the track of the train, -1 means that the train is not assigned a track
-   *                         yet
-   * @param delayHours       the delay hours of the train
-   * @param delayMinutes     the delay minutes of the train
-   */
   private static void validateParams(
-      int departureHours,
-      int departureMinutes,
+      String departureTime,
       String line,
       int trainNumber,
       String destination,
       int track,
-      int delayHours,
-      int delayMinutes
+      String delay
   ) {
-    if (departureHours < 0 || departureHours > 23) {
-      throw new IllegalArgumentException("Departure hours must be between 0 and 23");
+    if (departureTime == null) {
+      throw new IllegalArgumentException("Departure time cannot be null");
     }
-    if (departureMinutes < 0 || departureMinutes > 59) {
-      throw new IllegalArgumentException("Departure minutes must be between 0 and 59");
+    if (!RegexValidator.isTime(departureTime)) {
+      throw new IllegalArgumentException("Departure time must be in the format HH:mm");
+    }
+
+    if (line == null) {
+      throw new IllegalArgumentException("Line cannot be null");
     }
     if (line.isBlank()) {
       throw new IllegalArgumentException("Line cannot be blank");
     }
-    if (trainNumber < 0) {
-      throw new IllegalArgumentException("Train number cannot be negative");
+
+    if (trainNumber < 1) {
+      throw new IllegalArgumentException("Train number cannot be less than 1");
+    }
+
+    if (destination == null) {
+      throw new IllegalArgumentException("Destination cannot be null");
     }
     if (destination.isBlank()) {
       throw new IllegalArgumentException("Destination cannot be blank");
     }
+
+    if (track == 0) {
+      throw new IllegalArgumentException("Track cannot be 0");
+    }
     if (track < -1) {
-      throw new IllegalArgumentException("Track cannot be negative greater than -1");
+      throw new IllegalArgumentException("Track cannot be negative less than -1");
     }
-    if (delayHours < 0 || delayHours > 23) {
-      throw new IllegalArgumentException("Delay hours must be between 0 and 23");
+
+    if (delay == null) {
+      throw new IllegalArgumentException("Delay cannot be null");
     }
-    if (delayMinutes < 0 || delayMinutes > 59) {
-      throw new IllegalArgumentException("Delay minutes must be between 0 and 59");
+    if (!RegexValidator.isTime(delay)) {
+      throw new IllegalArgumentException("Delay must be in the format HH:mm");
     }
   }
 
@@ -249,7 +178,7 @@ public class TrainDeparture {
       throw new IllegalArgumentException("Track cannot be 0");
     }
     if (track < -1) {
-      throw new IllegalArgumentException("Track cannot be negative");
+      throw new IllegalArgumentException("Track cannot be negative less than -1");
     }
     this.track = track;
   }
@@ -270,49 +199,19 @@ public class TrainDeparture {
    * @throws IllegalArgumentException if the delay is negative or more than 23:59
    */
   public void setDelay(String delay) throws IllegalArgumentException {
-    if (LocalTime.parse(delay, DateTimeFormatter.ofPattern("HH:mm"))
-        .isBefore(LocalTime.parse("00:00"))) {
-      throw new IllegalArgumentException("Delay cannot be negative");
+    if (delay == null) {
+      throw new IllegalArgumentException("Delay cannot be null");
     }
-    if (LocalTime.parse(delay, DateTimeFormatter.ofPattern("HH:mm"))
-        .isAfter(LocalTime.parse("23:59"))) {
-      throw new IllegalArgumentException("Delay cannot be more than 23:59");
+
+    if (delay.isBlank()) {
+      throw new IllegalArgumentException("Delay cannot be blank");
+    }
+
+    if (!RegexValidator.isTime(delay)) {
+      throw new IllegalArgumentException("Delay must be in the format HH:mm");
     }
 
     this.delay = LocalTime.parse(delay, DateTimeFormatter.ofPattern("HH:mm"));
-  }
-
-  /**
-   * delay is a LocalTime object.
-   *
-   * @param delay delay of the train
-   */
-  public void setDelay(LocalTime delay) {
-    if (delay.isBefore(LocalTime.parse("00:00"))) {
-      throw new IllegalArgumentException("Delay cannot be negative");
-    }
-    if (delay.isAfter(LocalTime.parse("23:59"))) {
-      throw new IllegalArgumentException("Delay cannot be more than 23:59");
-    }
-
-    this.delay = delay;
-  }
-
-  /**
-   * delayHours is an int between 0 and 23, delayMinutes is an int between 0 and 59.
-   *
-   * @param delayHours   amount of delay hours of the train
-   * @param delayMinutes amount of delay minutes of the train
-   */
-  public void setDelay(int delayHours, int delayMinutes) {
-    if (LocalTime.of(delayHours, delayMinutes).isBefore(LocalTime.parse("00:00"))) {
-      throw new IllegalArgumentException("Delay cannot be negative");
-    }
-    if (LocalTime.of(delayHours, delayMinutes).isAfter(LocalTime.parse("23:59"))) {
-      throw new IllegalArgumentException("Delay cannot be more than 23:59");
-    }
-
-    this.delay = LocalTime.of(delayHours, delayMinutes);
   }
 
   /**
