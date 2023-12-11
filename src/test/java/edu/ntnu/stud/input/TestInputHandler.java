@@ -60,22 +60,6 @@ class TestInputHandler {
   }
 
   @Test
-  void getDouble_TextIsDouble_ReturnsDouble() {
-    String input = "0.0";
-
-    double result = assertDoesNotThrow(() -> act(input).getDouble());
-
-    assertEquals(0.0, result);
-  }
-
-  @Test
-  void getDouble_TextIsNotDouble_ThrowsException() {
-    String input = "not a double";
-
-    assertThrows(InvalidFormatException.class, () -> act(input).getDouble());
-  }
-
-  @Test
   void getTime_TextIsTime_ReturnsTime() {
     String input = "12:00";
 
