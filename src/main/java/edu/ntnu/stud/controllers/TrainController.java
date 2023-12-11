@@ -50,6 +50,14 @@ public class TrainController {
     commands.add(new ExitCommand(this));
   }
 
+  /**
+   * Generic method for executing the controller methods wrapped in a try-catch block.
+   * returns a value solely for testing purposes
+   *
+   * @see TrainControllerCallable
+   * @param callable the method to be executed.
+   * @return true if the method was executed successfully, false otherwise.
+   */
   private boolean execute(TrainControllerCallable callable) {
     try {
       callable.call();

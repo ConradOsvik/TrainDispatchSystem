@@ -5,6 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test class for the RegexValidator utility class. The class methods follows the
+ * methodName_stateUnderTest_expectedBehavior naming convention.
+ */
 class TestRegexValidator {
 
   @Test

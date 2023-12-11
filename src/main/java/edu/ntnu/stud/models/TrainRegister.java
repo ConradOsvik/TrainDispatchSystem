@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A register storing train departures in a hashmap.
+ * A class representing the data model of the register storing train departures.
  */
 public class TrainRegister {
 
@@ -33,7 +33,8 @@ public class TrainRegister {
   }
 
   /**
-   * Removes all train departures from the register with a departure time before or equal the current time.
+   * Removes all train departures from the register with a departure time before or equal the
+   * current time.
    */
   private void removeTrainsBeforeTime() {
     this.register.values()

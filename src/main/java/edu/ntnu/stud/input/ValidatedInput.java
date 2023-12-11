@@ -24,6 +24,7 @@ public class ValidatedInput {
   /**
    * A generic method for executing the input methods until they return a valid value.
    *
+   * @see InputCallable
    * @param callable the method to execute
    * @param <T>      the type of the result
    * @return the result of the method

@@ -20,6 +20,7 @@ class PrimitiveInputHandler {
   /**
    * A generic method for executing the primitive input methods.
    *
+   * @see PrimitiveInputCallable
    * @param callable the method to execute
    * @param <T>      the type of the result
    * @return the result of the method

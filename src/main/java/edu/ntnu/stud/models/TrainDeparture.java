@@ -5,7 +5,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Represents a train departure from a station.
+ * A class representing the data model of a train departure from a station.
  */
 public class TrainDeparture {
 

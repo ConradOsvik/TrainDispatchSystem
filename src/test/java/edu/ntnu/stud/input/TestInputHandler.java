@@ -12,6 +12,10 @@ import java.io.PrintStream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test class for the InputHandler class. The class methods follows the
+ * methodName_stateUnderTest_expectedBehavior naming convention.
+ */
 class TestInputHandler {
 
   private final InputStream standardIn = System.in;
