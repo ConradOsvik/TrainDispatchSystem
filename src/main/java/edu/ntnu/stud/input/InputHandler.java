@@ -85,8 +85,8 @@ class InputHandler {
 
     if (!validPattern) {
       throw new InvalidFormatException(
-          "The line must be in the format of a capital"
-              + " letter followed by 1 or 2 digits, please try again:");
+          "The line must be in the format of 1 or 2 capital"
+              + " letters followed by 1 or 2 digits, please try again:");
     }
 
     return input;
