@@ -13,9 +13,10 @@ public final class RegexValidator {
   }
 
   /**
-   * A method checking if string is of format [Capital letter][0-99].
+   * A method checking if string is of format [Capital letter][Capital letter][0-99].
+   * Example: F1, A12, RE2, RE42, etc.
    */
   public static boolean isLine(String input) {
-    return input.matches("^[A-Z][0-9]{1,2}$");
+    return input.matches("^[A-Z]{1,2}[0-9]{1,2}$");
   }
 }
