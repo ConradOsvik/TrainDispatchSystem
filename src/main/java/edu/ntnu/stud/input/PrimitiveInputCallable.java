@@ -1,7 +1,5 @@
 package edu.ntnu.stud.input;
 
-import edu.ntnu.stud.exceptions.InvalidFormatException;
-
 /**
  * This class represents a callable method for primitive user input.
  *
