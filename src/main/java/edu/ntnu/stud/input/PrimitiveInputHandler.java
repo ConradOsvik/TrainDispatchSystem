@@ -18,6 +18,22 @@ class PrimitiveInputHandler {
   }
 
   /**
+   * A generic method for executing the primitive input methods.
+   *
+   * @param callable the method to execute
+   * @param <T>      the type of the result
+   * @return the result of the method
+   * @throws InvalidFormatException if the input has invalid format
+   */
+  private <T> T execute(PrimitiveInputCallable<T> callable) throws InvalidFormatException {
+    try {
+      return callable.call();
+    } catch (Exception e) {
+      throw new InvalidFormatException();
+    }
+  }
+
+  /**
    * Gets the string a user inputted.
    *
    * @return the string a user inputted
@@ -45,21 +61,5 @@ class PrimitiveInputHandler {
    */
   double getDouble() throws InvalidFormatException {
     return execute(() -> Double.parseDouble(scanner.nextLine()));
-  }
-
-  /**
-   * A generic method for executing the primitive input methods.
-   *
-   * @param callable the method to execute
-   * @param <T>      the type of the result
-   * @return the result of the method
-   * @throws InvalidFormatException if the input has invalid format
-   */
-  private <T> T execute(PrimitiveInputCallable<T> callable) throws InvalidFormatException {
-    try {
-      return callable.call();
-    } catch (InvalidFormatException e) {
-      throw new InvalidFormatException();
-    }
   }
 }
