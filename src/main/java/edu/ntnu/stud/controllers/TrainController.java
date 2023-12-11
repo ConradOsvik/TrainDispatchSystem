@@ -17,7 +17,6 @@ import edu.ntnu.stud.views.ConsoleView;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,10 +27,9 @@ public class TrainController {
   private final TrainRegister trainRegister;
   private final ConsoleView consoleView;
   private final List<Command> commands;
-  private LocalTime time;
 
   /**
-   * Initializes the TrainController.
+   * Initializes the TrainController with a trainRegister and a consoleView.
    *
    * @param trainRegister The TrainRegister to use.
    * @param consoleView   The ConsoleView to use.
@@ -40,7 +38,6 @@ public class TrainController {
     this.trainRegister = trainRegister;
     this.consoleView = consoleView;
     this.commands = new ArrayList<>();
-    this.time = LocalTime.parse("00:00", DateTimeFormatter.ofPattern("HH:mm"));
 
     commands.add(new AddTrainCommand(this));
     commands.add(new SetTrainTrackCommand(this));
@@ -53,16 +50,11 @@ public class TrainController {
     commands.add(new ExitCommand(this));
   }
 
-  /**
-   * Truncates a string to a maximum length of 20 characters.
-   *
-   * @param text the text to be truncated.
-   */
-  private static String truncate(String text) {
-    if (text.length() > 20) {
-      return text.substring(0, 17) + "...";
-    } else {
-      return text;
+  private void execute(TrainControllerCallable callable) {
+    try {
+      callable.call();
+    } catch (Exception e) {
+      consoleView.displayErrorMessage(e.getMessage());
     }
   }
 
@@ -91,21 +83,15 @@ public class TrainController {
    *
    * @param trainDeparture the train departure to be added.
    */
-  public void addTrainToRegisterAndPrintMessage(TrainDeparture trainDeparture) {
-    try {
-      if (trainDeparture.getDelayedDepartureTime().isBefore(this.time)) {
-        throw new IllegalArgumentException(String.format(
-            "Train with number %d cannot be added to the register because it has already departed",
-            trainDeparture.getTrainNumber()));
-      }
-
+  public void addTrainToRegister(TrainDeparture trainDeparture) {
+    execute(() -> {
       this.trainRegister.addTrain(trainDeparture);
       consoleView.displayMessage(Color.colorString(
-          String.format("Train with number %d successfully added to the register",
-              trainDeparture.getTrainNumber()), Color.GREEN));
-    } catch (IllegalArgumentException e) {
-      consoleView.displayMessage(Color.colorString(e.getMessage(), Color.RED));
-    }
+              String.format("Train with number %d successfully added to the register",
+                  trainDeparture.getTrainNumber()), Color.GREEN
+          )
+      );
+    });
   }
 
   /**
@@ -114,8 +100,8 @@ public class TrainController {
    * @param trainNumber the train number.
    * @param track       the track of the train.
    */
-  public void setTrainTrackAndPrintMessage(int trainNumber, int track) {
-    try {
+  public void setTrainTrack(int trainNumber, int track) {
+    execute(() -> {
       TrainDeparture trainDeparture = this.trainRegister.getTrain(trainNumber);
       if (trainDeparture == null) {
         throw new IllegalArgumentException(
@@ -124,11 +110,12 @@ public class TrainController {
       trainDeparture.setTrack(track);
 
       consoleView.displayMessage(
-          Color.colorString(String.format("Train track successfully set to %d", track),
-              Color.GREEN));
-    } catch (IllegalArgumentException e) {
-      consoleView.displayMessage(Color.colorString(e.getMessage(), Color.RED));
-    }
+          Color.colorString(
+              String.format("Train track successfully set to %d", track),
+              Color.GREEN
+          )
+      );
+    });
   }
 
   /**
@@ -137,8 +124,8 @@ public class TrainController {
    * @param trainNumber the train number.
    * @param delay       the delay of the train.
    */
-  public void setTrainDelayAndPrintMessage(int trainNumber, String delay) {
-    try {
+  public void setTrainDelay(int trainNumber, String delay) {
+    execute(() -> {
       TrainDeparture trainDeparture = this.trainRegister.getTrain(trainNumber);
       if (trainDeparture == null) {
         throw new IllegalArgumentException(
@@ -147,11 +134,12 @@ public class TrainController {
       trainDeparture.setDelay(delay);
 
       consoleView.displayMessage(
-          Color.colorString(String.format("Train delay successfully set to %s", delay),
-              Color.GREEN));
-    } catch (IllegalArgumentException e) {
-      consoleView.displayMessage(Color.colorString(e.getMessage(), Color.RED));
-    }
+          Color.colorString(
+              String.format("Train delay successfully set to %s", delay),
+              Color.GREEN
+          )
+      );
+    });
   }
 
   /**
@@ -159,18 +147,16 @@ public class TrainController {
    *
    * @param trainNumber the train number.
    */
-  public void searchTrainByTrainNumberAndPrintMessage(int trainNumber) {
-    try {
+  public void searchTrainByTrainNumber(int trainNumber) {
+    execute(() -> {
       TrainDeparture trainDeparture = this.trainRegister.getTrain(trainNumber);
       if (trainDeparture == null) {
         throw new IllegalArgumentException(
             String.format("Train with number %d does not exist in the register", trainNumber));
       }
 
-      printTableOfTrains(trainDeparture);
-    } catch (IllegalArgumentException e) {
-      consoleView.displayMessage(Color.colorString(e.getMessage(), Color.RED));
-    }
+      consoleView.printTableOfTrains(trainDeparture);
+    });
   }
 
   /**
@@ -178,18 +164,16 @@ public class TrainController {
    *
    * @param destination the destination of the train.
    */
-  public void searchTrainsByDestinationAndPrintMessage(String destination) {
-    try {
+  public void searchTrainsByDestination(String destination) {
+    execute(() -> {
       List<TrainDeparture> trainDepartures = this.trainRegister.getTrainsByDestination(destination);
       if (trainDepartures.isEmpty()) {
         throw new IllegalArgumentException(
             String.format("No trains going to %s found in the register", destination));
       }
 
-      printTableOfTrains(trainDepartures);
-    } catch (IllegalArgumentException e) {
-      consoleView.displayMessage(Color.colorString(e.getMessage(), Color.RED));
-    }
+      consoleView.printTableOfTrains(trainDepartures);
+    });
   }
 
   /**
@@ -197,88 +181,23 @@ public class TrainController {
    *
    * @param time the time to be set.
    */
-  public void updateTimeAndPrintMessage(String time) {
-    try {
-      this.time = LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
-      this.trainRegister.removeTrainsAfterTime(this.time);
+  public void updateTime(String time) {
+    execute(() -> {
+      trainRegister.setTime(LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm")));
 
       consoleView.displayMessage(
-          Color.colorString(String.format("Time successfully set to %s", time), Color.GREEN));
-    } catch (IllegalArgumentException e) {
-      consoleView.displayMessage(Color.colorString(e.getMessage(), Color.RED));
-    }
+          Color.colorString(String.format("Time successfully set to %s", trainRegister.getTime()),
+              Color.GREEN));
+    });
   }
 
   /**
    * Shows the table of trains.
    */
   public void showTableOfTrains() {
-    List<TrainDeparture> trainDepartures = this.trainRegister.getTrainsSortedByDepartureTime();
-    printTableOfTrains(trainDepartures);
-  }
-
-  /**
-   * Creates a table header.
-   */
-  private String header() {
-    return Color.colorString(String.format("%-20s | %-20s | %-20s | %-20s | %-20s",
-        truncate("Departure time"),
-        truncate("Line"),
-        truncate("Train number"),
-        truncate("Destination"),
-        truncate("Track")), Color.YELLOW);
-  }
-
-  /**
-   * Creates a table separator.
-   */
-  private String separator() {
-    return Color.colorString(String.join("", Collections.nCopies(header().length(), "-")),
-        Color.YELLOW);
-  }
-
-  /**
-   * Creates a table row using a train departure.
-   *
-   * @param trainDeparture the train departure.
-   */
-  private String row(TrainDeparture trainDeparture) {
-    return Color.colorString(String.format("%-20s | %-20s | %-20s | %-20s | %-20s",
-            truncate(trainDeparture.getDelayedDepartureTime().toString()),
-            truncate(trainDeparture.getLine()),
-            truncate(Integer.toString(trainDeparture.getTrainNumber())),
-            truncate(trainDeparture.getDestination()),
-            truncate(
-                trainDeparture.getTrack() > 0
-                    ? Integer.toString(trainDeparture.getTrack())
-                    : "Unset"
-            )
-        ),
-        Color.YELLOW
-    );
-  }
-
-  /**
-   * Prints a table of trains using a train departure.
-   *
-   * @param trainDeparture the train departure.
-   */
-  private void printTableOfTrains(TrainDeparture trainDeparture) {
-    consoleView.displayMessage(header());
-    consoleView.displayMessage(separator());
-    consoleView.displayMessage(row(trainDeparture));
-  }
-
-  /**
-   * Prints a table of trains using a list of train departures.
-   *
-   * @param trainDepartures the list of train departures.
-   */
-  private void printTableOfTrains(List<TrainDeparture> trainDepartures) {
-    consoleView.displayMessage(header());
-    trainDepartures.forEach(trainDeparture -> {
-      consoleView.displayMessage(separator());
-      consoleView.displayMessage(row(trainDeparture));
+    execute(() -> {
+      List<TrainDeparture> trainDepartures = this.trainRegister.getTrainsSortedByDepartureTime();
+      consoleView.printTableOfTrains(trainDepartures);
     });
   }
 }
