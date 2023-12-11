@@ -14,7 +14,7 @@ interface PrimitiveInputCallable<T> {
    * Calls the method.
    *
    * @return the result of the method
-   * @throws InvalidFormatException if the input has invalid format
+   * @throws Exception if the input has invalid format
    */
-  T call() throws InvalidFormatException;
+  T call() throws Exception;
 }
