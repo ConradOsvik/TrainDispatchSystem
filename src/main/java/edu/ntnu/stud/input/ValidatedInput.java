@@ -22,6 +22,23 @@ public class ValidatedInput {
   }
 
   /**
+   * A generic method for executing the input methods until they return a valid value.
+   *
+   * @param callable the method to execute
+   * @param <T>      the type of the result
+   * @return the result of the method
+   */
+  private <T> T execute(InputCallable<T> callable) {
+    while (true) {
+      try {
+        return callable.call();
+      } catch (InvalidFormatException | InvalidInputException e) {
+        consoleView.displayMessage(Color.colorString(e.getMessage(), Color.RED));
+      }
+    }
+  }
+
+  /**
    * Gets the string a user inputted.
    *
    * @return the string a user inputted
@@ -82,22 +99,5 @@ public class ValidatedInput {
    */
   public int getTrack() {
     return execute(inputHandler::getTrack);
-  }
-
-  /**
-   * A generic method for executing the input methods until they return a valid value.
-   *
-   * @param callable the method to execute
-   * @param <T>      the type of the result
-   * @return the result of the method
-   */
-  private <T> T execute(InputCallable<T> callable) {
-    while (true) {
-      try {
-        return callable.call();
-      } catch (InvalidFormatException | InvalidInputException e) {
-        consoleView.displayMessage(Color.colorString(e.getMessage(), Color.RED));
-      }
-    }
   }
 }
