@@ -52,6 +52,6 @@ public class SearchTrainByTrainNumberCommand implements Command {
     consoleView.displayMessage("Please enter the train number you want to look up:");
     int trainNumber = validatedInput.getTrainNumber();
 
-    trainController.searchTrainByTrainNumberAndPrintMessage(trainNumber);
+    trainController.searchTrainByTrainNumber(trainNumber);
   }
 }

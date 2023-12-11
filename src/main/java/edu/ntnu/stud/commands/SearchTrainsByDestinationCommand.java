@@ -49,6 +49,6 @@ public class SearchTrainsByDestinationCommand implements Command {
     consoleView.displayMessage("Please enter the destination you want to look up:");
     String destination = validatedInput.getString();
 
-    trainController.searchTrainsByDestinationAndPrintMessage(destination);
+    trainController.searchTrainsByDestination(destination);
   }
 }

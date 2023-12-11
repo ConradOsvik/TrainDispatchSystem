@@ -52,6 +52,6 @@ public class UpdateTimeCommand implements Command {
     consoleView.displayMessage("Please enter the time you want to set:");
     String time = validatedInput.getTime();
 
-    trainController.updateTimeAndPrintMessage(time);
+    trainController.updateTime(time);
   }
 }

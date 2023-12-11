@@ -54,6 +54,6 @@ public class SetTrainTrackCommand implements Command {
     consoleView.displayMessage("Enter the track number:");
     int track = validatedInput.getTrack();
 
-    trainController.setTrainTrackAndPrintMessage(trainNumber, track);
+    trainController.setTrainTrack(trainNumber, track);
   }
 }

@@ -54,6 +54,6 @@ public class SetTrainDelayCommand implements Command {
     consoleView.displayMessage("Please enter the delay on format HH:mm:");
     String delay = validatedInput.getTime();
 
-    trainController.setTrainDelayAndPrintMessage(trainNumber, delay);
+    trainController.setTrainDelay(trainNumber, delay);
   }
 }

@@ -69,8 +69,8 @@ public class AddTestDataCommand implements Command {
         "00:30"
     );
 
-    trainController.addTrainToRegisterAndPrintMessage(trainDeparture1);
-    trainController.addTrainToRegisterAndPrintMessage(trainDeparture2);
-    trainController.addTrainToRegisterAndPrintMessage(trainDeparture3);
+    trainController.addTrainToRegister(trainDeparture1);
+    trainController.addTrainToRegister(trainDeparture2);
+    trainController.addTrainToRegister(trainDeparture3);
   }
 }

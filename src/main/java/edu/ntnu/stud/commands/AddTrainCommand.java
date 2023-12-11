@@ -66,6 +66,6 @@ public class AddTrainCommand implements Command {
     TrainDeparture trainDeparture = new TrainDeparture(departureTime, line, trainNumber,
         destination, trackNumber, delay);
 
-    trainController.addTrainToRegisterAndPrintMessage(trainDeparture);
+    trainController.addTrainToRegister(trainDeparture);
   }
 }
