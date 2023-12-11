@@ -12,21 +12,63 @@ import java.util.stream.Collectors;
 public class TrainRegister {
 
   private final HashMap<Integer, TrainDeparture> register;
+  private LocalTime time;
 
   /**
    * Constructs a new TrainRegister object, initializing the register hashmap.
    */
   public TrainRegister() {
     this.register = new HashMap<>();
+    this.time = LocalTime.parse("00:00");
   }
 
   /**
-   * Gets the register itself (the hashmap).
+   * Checks if a train departure is before or equal the current time.
    *
-   * @return the register
+   * @param trainDeparture the train departure to check
+   * @return true if the train departure is before or equal the current time, false otherwise
    */
-  public HashMap<Integer, TrainDeparture> getRegister() {
-    return register;
+  private boolean isTrainDepartureBeforeTime(TrainDeparture trainDeparture) {
+    return !trainDeparture.getDelayedDepartureTime().isAfter(this.time);
+  }
+
+  /**
+   * Removes all train departures from the register with a departure time before or equal the current time.
+   */
+  private void removeTrainsBeforeTime() {
+    this.register.values()
+        .removeIf(this::isTrainDepartureBeforeTime);
+  }
+
+  /**
+   * Gets the current time of the register.
+   *
+   * @return the current time of the register
+   */
+  public LocalTime getTime() {
+    return time;
+  }
+
+  /**
+   * Sets the current time of the register.
+   *
+   * @param time the time to set
+   * @throws IllegalArgumentException if the time is null or before the current time
+   */
+  public void setTime(LocalTime time) throws IllegalArgumentException {
+    if (time == null) {
+      throw new IllegalArgumentException("Time cannot be null");
+    }
+
+    if (time.isBefore(this.time)) {
+      throw new IllegalArgumentException(
+          String.format("Cannot set time to %s, as it is before the current time of %s", time,
+              this.time));
+    }
+
+    this.time = time;
+
+    this.removeTrainsBeforeTime();
   }
 
   /**
@@ -36,31 +78,24 @@ public class TrainRegister {
    * @throws IllegalArgumentException if the train number already exists in the register
    */
   public void addTrain(TrainDeparture trainDeparture) throws IllegalArgumentException {
+    if (trainDeparture == null) {
+      throw new IllegalArgumentException("Train departure cannot be null");
+    }
+
     if (this.getTrain(trainDeparture.getTrainNumber()) != null) {
       throw new IllegalArgumentException(
           "Cannot add a train departure with a train number that already exists in the register");
     }
 
+    if (this.isTrainDepartureBeforeTime(trainDeparture)) {
+      throw new IllegalArgumentException(
+          String.format(
+              "Train with number %d cannot be added to the"
+                  + " register because it has already departed",
+              trainDeparture.getTrainNumber()));
+    }
+
     register.put(trainDeparture.getTrainNumber(), trainDeparture);
-  }
-
-  /**
-   * Removes a train departure from the register.
-   *
-   * @param trainNumber the train number of the train departure to remove
-   */
-  public void removeTrain(int trainNumber) {
-    register.remove(trainNumber);
-  }
-
-  /**
-   * Removes all train departures from the register with a departure time before the given time.
-   *
-   * @param time the time to remove train departures before
-   */
-  public void removeTrainsAfterTime(LocalTime time) {
-    this.register.entrySet()
-        .removeIf(entry -> entry.getValue().getDelayedDepartureTime().isBefore(time));
   }
 
   /**
@@ -93,23 +128,5 @@ public class TrainRegister {
   public List<TrainDeparture> getTrainsSortedByDepartureTime() {
     return register.values().stream()
         .sorted(Comparator.comparing(TrainDeparture::getDepartureTime)).toList();
-  }
-
-  /**
-   * Checks if the register is empty.
-   *
-   * @return true if the register is empty, false otherwise
-   */
-  public boolean isEmpty() {
-    return register.isEmpty();
-  }
-
-  /**
-   * Gets the size of the register.
-   *
-   * @return the size of the register
-   */
-  public int size() {
-    return register.size();
   }
 }
