@@ -12,3 +12,15 @@ Spørsmål:
     Input strukturen, good eller bad
     Burde jeg fjerne unødvendige method overloads?
     Burde jeg returne hva som logisk gir mening i en model eller formatet som blir brukt utenfor modellen?
+
+TODO:
+    refactor the printing of the table of trains in controller
+    add more commands
+    add all tests
+    refactor javadoc
+    remove dead code
+    check right usage of %d and %s
+
+    move truncate to util class
+    move table printing to view
+    refactor naming convention on methods in controller
