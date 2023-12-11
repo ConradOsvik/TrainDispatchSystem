@@ -58,15 +58,6 @@ public class ValidatedInput {
   }
 
   /**
-   * Gets the double a user inputted.
-   *
-   * @return the double a user inputted
-   */
-  public double getDouble() {
-    return execute(inputHandler::getDouble);
-  }
-
-  /**
    * Gets the time a user inputted on the format HH:mm.
    *
    * @return the time a user inputted

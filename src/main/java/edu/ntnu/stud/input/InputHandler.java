@@ -39,16 +39,6 @@ class InputHandler {
   }
 
   /**
-   * Gets the double a user inputted.
-   *
-   * @return the double a user inputted
-   * @throws InvalidFormatException if the input has invalid format
-   */
-  double getDouble() throws InvalidFormatException {
-    return primitiveInputHandler.getDouble();
-  }
-
-  /**
    * Gets the time a user inputted on the format HH:mm.
    *
    * @return the time a user inputted

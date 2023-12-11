@@ -53,14 +53,4 @@ class PrimitiveInputHandler {
   int getInt() throws InvalidFormatException {
     return execute(() -> Integer.parseInt(scanner.nextLine()));
   }
-
-  /**
-   * Gets the double a user inputted.
-   *
-   * @return the double a user inputted
-   * @throws InvalidFormatException if the input has invalid format
-   */
-  double getDouble() throws InvalidFormatException {
-    return execute(() -> Double.parseDouble(scanner.nextLine()));
-  }
 }
