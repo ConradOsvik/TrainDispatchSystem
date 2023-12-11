@@ -6,6 +6,18 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * A class representing the data model of a train departure from a station.
+ *
+ * <p>
+ *   The data model contains the following information:
+ *   <ul>
+ *     <li>departure time</li>
+ *     <li>line</li>
+ *     <li>train number</li>
+ *     <li>destination</li>
+ *     <li>track</li>
+ *     <li>delay</li>
+ *   </ul>
+ * </p>
  */
 public class TrainDeparture {
 

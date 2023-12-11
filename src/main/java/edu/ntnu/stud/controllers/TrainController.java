@@ -21,6 +21,11 @@ import java.util.List;
 
 /**
  * A class representing the controller of the application.
+ *
+ * <p>
+ *   The controller is responsible for handling the incoming requests from the application.
+ *   These requests gets handled in the handleRequest method.
+ * </p>
  */
 public class TrainController {
 

@@ -11,6 +11,8 @@ import java.util.List;
 
 /**
  * A class representing the console view of the application.
+ *
+ * <p>the view is built around the native console utilizing System.out</p>
  */
 public class ConsoleView {
 

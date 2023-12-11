@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 /**
  * A class representing the data model of the register storing train departures.
+ *
+ * <p>This registry contains both the registry, time and operations for altering the registry</p>
  */
 public class TrainRegister {
 
